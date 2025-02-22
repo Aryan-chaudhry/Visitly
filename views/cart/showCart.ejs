@@ -4,7 +4,7 @@
 <% } else { %>
   <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
     <% requests.forEach(request => { %> <% if (!request.listing_id) { %> <%
-      console.log("⚠️ Warning: Missing listing_id in request:", request); %> <% }
+      console.log("⚠ Warning: Missing listing_id in request:", request); %> <% }
       %>
       <div class="card col listing-card container1 container2 cart1 align-items-center" style="width: 22rem;">
           <div id="container">

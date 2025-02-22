@@ -48,7 +48,6 @@ router.get(
 
 // Rental Request Route
 router.post("/:id/rent", isLoggedIn, wrapAsync(listingController.createRentalRequest));
-
 // router.post("/:id/rent", async (req, res) => {
 //   try {
 //     console.log("Rent request received:", req.body);

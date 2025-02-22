@@ -20,6 +20,11 @@ const rentalRequestSchema = new mongoose.Schema({
     enum: ["Pending", "Approved", "Rejected"],
     default: "Pending", 
   },
+  customer_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   created_at: { type: Date, default: Date.now },
 });
 

@@ -207,33 +207,30 @@ module.exports.search = async (req, res) => {
 };
 
 /*  create rental request */
-
 module.exports.createRentalRequest = async (req, res) => {
   try {
     console.log("Rent request received:", req.body);
 
-    const { rentStartDate, rentEndDate, renterId } = req.body;
+    const { rentStartDate, rentEndDate, renterId, action } = req.body; // renterId and action are coming from the frontend
     const listing_id = req.params.id;
+    const customer_id = req.user._id; // Currently logged-in user
 
     // Validate input fields
-    if (!rentStartDate || !rentEndDate || !renterId) {
+    if (!rentStartDate || !rentEndDate || !renterId || !customer_id) {
       console.log("Missing required fields");
-      return res
-        .status(400)
-        .send(
-          "All fields (rental_start_date, rental_end_date, user_id) are required."
-        );
+      return res.status(400).send("All fields (rental_start_date, rental_end_date, renterId, customer_id) are required.");
     }
 
     if (new Date(rentStartDate) >= new Date(rentEndDate)) {
       console.log("Invalid date range");
       return res.status(400).send("End date must be after start date.");
-    }
+    }  
 
     // Create a new rental request
     const rentalRequest = new RentalRequest({
       listing_id,
-      user_id: renterId,
+      user_id: renterId, // Renter (Owner of the listing)
+      customer_id, // Customer (Logged-in user)
       rental_start_date: rentStartDate,
       rental_end_date: rentEndDate,
       status: "Pending",
@@ -242,13 +239,21 @@ module.exports.createRentalRequest = async (req, res) => {
     await rentalRequest.save();
     console.log("Rental request saved:", rentalRequest);
 
-    // Fetch updated rental requests for the user
-    const requests = await RentalRequest.find({ user_id: renterId })
-      .populate("listing_id", "title description price image")
-      .exec();
+    if (action[1] === 'add_to_cart') {
+      // Fetch updated rental requests for the customer
+      const requests = await RentalRequest.find({ customer_id })
+        .populate("listing_id", "title description price image")
+        .exec();
 
-    // Render the updated cart view
-    res.render("cart/showCart.ejs", { requests });
+      // Render the updated cart view (i.e., add the rental to the cart)
+      return res.render("cart/showCart", { requests });
+    } else if (action[1] === 'proceed_to_rent') {
+      // Redirect to the checkout page if Proceed to Rent is selected
+      return res.redirect(`/rent/checkout/${customer_id}/${listing_id}`);
+    } else {
+      return res.status(400).send("Invalid action.");
+    }
+
   } catch (error) {
     console.error("Error processing rental request:", error);
     res.status(500).send("Error processing rental request.");

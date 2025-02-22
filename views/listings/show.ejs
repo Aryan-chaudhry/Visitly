@@ -32,43 +32,45 @@
       <p class="card-text"><b>Place : </b><%= listing.location %></p>
       <p class="card-text"><b>Country : </b><%= listing.country %></p>
 
-     <form action="/listings/<%= listing._id %>/rent" method="POST" class="mb-4">
-  <!-- Outer Div -->
-  <div class="d-flex justify-content-center">
-    <div class="row mb-3 align-items-center" style="gap: 20px;"> <!-- Added custom gap -->
-      <!-- Start Date -->
-      <div class="col-auto">
-  <label for="rentStartDate" class="form-label"><b>Check-In</b></label>
-  <input type="date" name="rentStartDate" class="form-control" required min="" id="rentStartDate">
-</div>
-<!-- End Date -->
-<div class="col-auto">
-  <label for="rentEndDate" class="form-label"><b>Check-Out</b></label>
-  <input type="date" name="rentEndDate" class="form-control" required min="" id="rentEndDate">
-</div>
-
-<script>
-  // Set the current date as the minimum date for both inputs
-  const today = new Date().toISOString().split('T')[0]; // Get the current date in YYYY-MM-DD format
-  document.getElementById('rentStartDate').setAttribute('min', today);
-  document.getElementById('rentEndDate').setAttribute('min', today);
-</script>
-
-    </div>
-  </div>
-  <!-- Hidden Inputs -->
-  <input type="hidden" name="rentPrice" value="<%= listing.price %>">
-  <input type="hidden" name="renterId" value="<%= user._id %>">
-  <!-- Button -->
-  <div class="d-flex justify-content-center mt-3">
-    <button type="submit" class="btn btn-primary rentNow">Rent Now</button>
-  </div>
-</form>
-
-
+      <form action="/listings/<%= listing._id %>/rent" method="POST" class="mb-4">
+        <!-- Outer Div -->
+        <div class="d-flex justify-content-center">
+          <div class="row mb-3 align-items-center" style="gap: 20px;"> <!-- Added custom gap -->
+            <!-- Start Date -->
+            <div class="col-auto">
+              <label for="rentStartDate" class="form-label"><b>Check-In</b></label>
+              <input type="date" name="rentStartDate" class="form-control" required min="" id="rentStartDate">
+            </div>
+            <!-- End Date -->
+            <div class="col-auto">
+              <label for="rentEndDate" class="form-label"><b>Check-Out</b></label>
+              <input type="date" name="rentEndDate" class="form-control" required min="" id="rentEndDate">
+            </div>
       
+            <script>
+              // Set the current date as the minimum date for both inputs
+              const today = new Date().toISOString().split('T')[0]; // Get the current date in YYYY-MM-DD format
+              document.getElementById('rentStartDate').setAttribute('min', today);
+              document.getElementById('rentEndDate').setAttribute('min', today);
+            </script>
+          </div>
+        </div>
+        
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="rentPrice" value="<%= listing.price %>">
+        <input type="hidden" name="renterId" value="<%= user._id %>">
+        
+        <!-- Action (to distinguish between Add to Cart and Proceed to Rent) -->
+        <input type="hidden" name="action" value="">
       
-
+        <!-- Buttons -->
+        <div class="d-flex justify-content-center mt-3">
+          <button type="submit" class="btn btn-primary" style="border-radius: 30px 30px 30px 30px; margin-right: 50px;" name="action" value="add_to_cart">Add to Cart</button>
+          <button type="submit" class="btn btn-primary" style="border-radius: 30px 30px 30px 30px; margin-left: 50px;" name="action" value="proceed_to_rent">
+             Rent Now
+          </button>
+        </div>
+      </form>
     </div>
   </div>
   
