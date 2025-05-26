@@ -31,3 +31,10 @@ The Airbnb clone project showcases my proficiency in full-stack web development,
 ## Deployment
 
 I have deployed my project using render connected with MongoDB Atlas
+
+## Demo and Live
+![Screenshot 2025-04-12 152626](https://github.com/user-attachments/assets/78fa68b1-b5ce-49f3-a925-cbf1498a0bff)
+
+
+Live 👉 [Weather Forecast Web App](https://visitly-live.onrender.com/listings)
+
